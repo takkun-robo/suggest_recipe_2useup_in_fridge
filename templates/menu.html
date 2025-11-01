@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>献立提案 - 冷蔵庫管理アプリ</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+        nav { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc; }
+        nav a { text-decoration: none; margin-right: 20px; font-size: 1.1em; color: #007bff; }
+        nav a.active { font-weight: bold; color: #333; }
+        .suggestion-box { margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; white-space: pre-wrap; line-height: 1.6; }
+        button { padding: 10px 15px; font-size: 1em; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('index') }}">冷蔵庫管理</a>
+        <a href="{{ url_for('menu') }}" class="active">献立提案</a>
+    </nav>
+
+    <h1>献立提案</h1>
+    <p>冷蔵庫に登録されている賞味期限内の食材から、AIが献立を提案します。</p>
+    
+    <form action="{{ url_for('menu') }}" method="post">
+        <button type="submit">今日の献立を提案してもらう</button>
+    </form>
+    
+    {% if suggestion %}
+    <h2>提案結果</h2>
+    <div class="suggestion-box">
+{{ suggestion }}
+    </div>
+    {% endif %}
+
+</body>
+</html>

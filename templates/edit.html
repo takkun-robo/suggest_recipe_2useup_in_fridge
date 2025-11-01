@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>食材の編集</title>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}" class="active">冷蔵庫管理</a>
+        <a href="{{ url_for('menu') }}">献立提案</a>
+    </nav>
+    <h1>食材の編集</h1>
+
+    {# item['id'] を含んだURLにPOSTリクエストを送る #}
+    <form action="{{ url_for('edit', id=item['id']) }}" method="post">
+        <label for="name">食材名:</label>
+        {# 既存の食材名を value 属性に設定 #}
+        <input type="text" id="name" name="name" value="{{ item['name'] }}" required>
+
+        <label for="expiry_date">賞味期限:</label>
+        {# 既存の賞味期限を value 属性に設定 #}
+        <input type="date" id="expiry_date" name="expiry_date" value="{{ item['expiry_date'] }}" required>
+        
+        <button type="submit">更新</button>
+    </form>
+    
+    <br>
+    <a href="{{ url_for('index') }}">一覧に戻る</a>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>冷蔵庫管理アプリ</title>
+    
+    {# ここからCSSを追加 #}
+    <style>
+        /* 献立提案へのナビゲーション*/
+        body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+        nav { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc; }
+        nav a { text-decoration: none; margin-right: 20px; font-size: 1.1em; color: #007bff; }
+        nav a.active { font-weight: bold; color: #333; }
+        /* 賞味期限切れの行のスタイル */
+        .danger {
+            background-color: #f8d7da; /* 薄い赤色 */
+        }
+        /* 賞味期限間近の行のスタイル */
+        .warning {
+            background-color: #fff3cd; /* 薄い黄色 */
+        }
+    </style>
+    {# ここまでCSSを追加 #}
+
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}" class="active">冷蔵庫管理</a>
+        <a href="{{ url_for('menu') }}">献立提案</a>
+    </nav>
+    <h1>冷蔵庫管理アプリ</h1>
+
+    <h2>食材を登録</h2>
+    <form action="{{ url_for('add') }}" method="post">
+        <label for="name">食材名:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="expiry_date">賞味期限:</label>
+        <input type="date" id="expiry_date" name="expiry_date" required>
+        <button type="submit">登録</button>
+    </form>
+
+    <h2>食材一覧</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>食材名</th>
+                <th>賞味期限</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            {# itemのstatusに応じてtrにクラスを適用 #}
+            <tr class="{{ item['status'] }}">
+                <td>{{ item['name'] }}</td>
+                <td>{{ item['expiry_date'] }}</td>
+                <td>
+                    <a href="{{ url_for('edit', id=item['id']) }}">編集</a>
+                    
+                    <form action="{{ url_for('delete', id=item['id']) }}" method="post" style="display:inline;">
+                        <button type="submit">削除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
