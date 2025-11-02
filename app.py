@@ -18,7 +18,7 @@ if not os.environ.get('GOOGLE_LLM_API_KEY'):
     print('GOOGLE_LLM_API_KEY is not found.')
     print('maybe that value is not set in dotenv?')
 # gemini apiのクライアント作成
-LLM_client = genai.Client(api_key='GOOGLE_LLM_API_KEY')
+LLM_client = genai.Client(api_key=os.environ.get('GOOGLE_LLM_API_KEY'))
 # geminiのせっていもろもろ
 LLM_model = 'gemini-2.5-flash'
 
@@ -128,7 +128,7 @@ def menu():
                 suggestion = LLM_client.models.generate_content(
                     model=LLM_model,
                     config=types.GenerateContentConfig(
-                    system_instruction=prompt
+                        system_instruction=prompt
                     ),
                     contents=contents
                 )

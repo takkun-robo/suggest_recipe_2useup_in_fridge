@@ -4,12 +4,32 @@
     <meta charset="UTF-8">
     <title>献立提案 - 冷蔵庫管理アプリ</title>
     <style>
+        /* --- ページ全体の基本スタイル --- */
         body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
         nav { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc; }
         nav a { text-decoration: none; margin-right: 20px; font-size: 1.1em; color: #007bff; }
         nav a.active { font-weight: bold; color: #333; }
         .suggestion-box { margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; white-space: pre-wrap; line-height: 1.6; }
         button { padding: 10px 15px; font-size: 1em; cursor: pointer; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* --- ここからロードバーのスタイルを追加 --- */
+        /* ローディングスピナー本体 */
+        .loader {
+            border: 6px solid #f3f3f3; /* 薄い灰色の円 */
+            border-top: 6px solid #3498db; /* 上部だけ青い円 */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1.5s linear infinite; /* spinアニメーションを適用 */
+            margin: 20px auto; /* 中央寄せ */
+        }
+        
+        /* 回転するアニメーションの定義 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -22,9 +42,16 @@
     <h1>献立提案</h1>
     <p>冷蔵庫に登録されている賞味期限内の食材から、AIが献立を提案します。</p>
     
-    <form action="{{ url_for('menu') }}" method="post">
-        <button type="submit">今日の献立を提案してもらう</button>
+    <!-- JavaScriptで操作するためにidを付与 -->
+    <form id="menu-form" action="{{ url_for('menu') }}" method="post">
+        <button id="submit-button" type="submit">今日の献立を提案してもらう</button>
     </form>
+    
+    <!-- ↓↓↓ ローディングスピナーの要素を追加（初期状態は非表示） ↓↓↓ -->
+    <div id="loader-container" style="display: none;">
+        <div class="loader"></div>
+        <p style="text-align: center;">AIが献立を考えています...</p>
+    </div>
     
     {% if suggestion %}
     <h2>提案結果</h2>
@@ -32,6 +59,26 @@
 {{ suggestion }}
     </div>
     {% endif %}
+
+
+    <!-- ↓↓↓ ここからJavaScriptを追加 ↓↓↓ -->
+    <script>
+        // 必要なHTML要素を取得
+        const menuForm = document.getElementById('menu-form');
+        const submitButton = document.getElementById('submit-button');
+        const loaderContainer = document.getElementById('loader-container');
+
+        // フォームが送信された時の処理を登録
+        menuForm.addEventListener('submit', function() {
+            // 1. ボタンを無効化して、二重押しを防ぐ
+            submitButton.disabled = true;
+            submitButton.textContent = '提案を生成中...';
+
+            // 2. ローディングスピナーを表示する
+            loaderContainer.style.display = 'block';
+        });
+    </script>
+    <!-- ↑↑↑ JavaScriptはここまで ↑↑↑ -->
 
 </body>
 </html>
