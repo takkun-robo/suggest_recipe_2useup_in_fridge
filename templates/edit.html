@@ -19,7 +19,7 @@
 
         <label for="expiry_date">賞味期限:</label>
         {# 既存の賞味期限を value 属性に設定 #}
-        <input type="date" id="expiry_date" name="expiry_date" value="{{ item['expiry_date'] }}" required>
+        <input type="date" id="expiry_date" name="expiry_date" value="{{ item.expiry_date }}" required>
         
         <button type="submit">更新</button>
     </form>
