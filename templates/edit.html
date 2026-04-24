@@ -6,7 +6,7 @@
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('index') }}" class="active">冷蔵庫管理</a>
+        <a href="{{ url_for('index') }}" class="active">食材管理</a>
         <a href="{{ url_for('menu') }}">献立提案</a>
     </nav>
     <h1>食材の編集</h1>
@@ -16,6 +16,14 @@
         <label for="name">食材名:</label>
         {# 既存の食材名を value 属性に設定 #}
         <input type="text" id="name" name="name" value="{{ item['name'] }}" required>
+
+        <label for="storage_location">保管場所:</label>
+        <select id="storage_location" name="storage_location">
+            <option value="冷蔵庫" {% if item['storage_location'] == '冷蔵庫' %}selected{% endif %}>冷蔵庫</option>
+            <option value="冷凍庫" {% if item['storage_location'] == '冷凍庫' %}selected{% endif %}>冷凍庫</option>
+            <option value="常温" {% if item['storage_location'] == '常温' %}selected{% endif %}>常温</option>
+            <option value="その他" {% if item['storage_location'] == 'その他' %}selected{% endif %}>その他</option>
+        </select>
 
         <label for="expiry_date">賞味期限:</label>
         {# 既存の賞味期限を value 属性に設定 #}

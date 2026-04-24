@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>献立提案 - 冷蔵庫管理アプリ</title>
+    <title>献立提案 - 食材管理アプリ</title>
     <style>
         /* --- ページ全体の基本スタイル --- */
         body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
@@ -35,12 +35,12 @@
 <body>
 
     <nav>
-        <a href="{{ url_for('index') }}">冷蔵庫管理</a>
+        <a href="{{ url_for('index') }}">食材管理</a>
         <a href="{{ url_for('menu') }}" class="active">献立提案</a>
     </nav>
 
     <h1>献立提案</h1>
-    <p>冷蔵庫に登録されている賞味期限内の食材から、AIが献立を提案します。</p>
+    <p>登録されている賞味期限内の食材から、AIが献立を提案します。</p>
     
     <!-- JavaScriptで操作するためにidを付与 -->
     <form id="menu-form" action="{{ url_for('menu') }}" method="post">

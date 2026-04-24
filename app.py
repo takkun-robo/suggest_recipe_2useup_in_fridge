@@ -43,6 +43,7 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     expiry_date = db.Column(db.Date, nullable=False)
+    storage_location = db.Column(db.String(50), nullable=True, default='冷蔵庫')
 
     def __repr__(self):
         return f'<Item {self.name}>'
@@ -82,6 +83,7 @@ def index():
             'id': item.id,
             'name': item.name,
             'expiry_date': item.expiry_date.isoformat(), # HTMLで扱いやすいように文字列に変換
+            'storage_location': item.storage_location or '冷蔵庫',
             'status': status
         })
 
@@ -91,9 +93,10 @@ def index():
 def add():
     name = request.form['name']
     expiry_date_str = request.form['expiry_date']
+    storage_location = request.form.get('storage_location', '冷蔵庫')
     
     # 新しいItemオブジェクトを作成してデータベースに追加
-    new_item = Item(name=name, expiry_date=date.fromisoformat(expiry_date_str))
+    new_item = Item(name=name, expiry_date=date.fromisoformat(expiry_date_str), storage_location=storage_location)
     db.session.add(new_item)
     db.session.commit() # 変更を確定
     
@@ -124,6 +127,7 @@ def edit(id):
         # conn.close()
         item_to_edit.name = request.form['name']
         item_to_edit.expiry_date = date.fromisoformat(request.form['expiry_date'])
+        item_to_edit.storage_location = request.form.get('storage_location', '冷蔵庫')
         db.session.commit()
         return redirect(url_for('index'))
     
@@ -131,7 +135,8 @@ def edit(id):
     item_for_template = {
         'id': item_to_edit.id,
         'name': item_to_edit.name,
-        'expiry_date': item_to_edit.expiry_date.isoformat()
+        'expiry_date': item_to_edit.expiry_date.isoformat(),
+        'storage_location': item_to_edit.storage_location or '冷蔵庫'
     }
 
     return render_template('edit.html', item=item_for_template)
@@ -182,7 +187,7 @@ def menu():
                 # APIからのエラーをより具体的に表示
                 suggestion = f"APIとの通信中にエラーが発生しました: {e}"
         else:
-            suggestion = "冷蔵庫に賞味期限内の食材がありません。まずは食材を登録してください。"
+            suggestion = "賞味期限内の食材が登録されていません。まずは食材を登録してください。"
             
     return render_template('menu.html', suggestion=suggestion)
 

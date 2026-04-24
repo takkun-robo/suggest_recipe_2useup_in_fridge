@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>冷蔵庫管理アプリ</title>
+    <title>食材管理アプリ</title>
     
     {# ここからCSSを追加 #}
     <style>
@@ -25,15 +25,22 @@
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('index') }}" class="active">冷蔵庫管理</a>
+        <a href="{{ url_for('index') }}" class="active">食材管理</a>
         <a href="{{ url_for('menu') }}">献立提案</a>
     </nav>
-    <h1>冷蔵庫管理アプリ</h1>
+    <h1>食材管理アプリ</h1>
 
     <h2>食材を登録</h2>
     <form action="{{ url_for('add') }}" method="post">
         <label for="name">食材名:</label>
         <input type="text" id="name" name="name" required>
+        <label for="storage_location">保管場所:</label>
+        <select id="storage_location" name="storage_location">
+            <option value="冷蔵庫">冷蔵庫</option>
+            <option value="冷凍庫">冷凍庫</option>
+            <option value="常温">常温</option>
+            <option value="その他">その他</option>
+        </select>
         <label for="expiry_date">賞味期限:</label>
         <input type="date" id="expiry_date" name="expiry_date" required>
         <button type="submit">登録</button>
@@ -44,6 +51,7 @@
         <thead>
             <tr>
                 <th>食材名</th>
+                <th>保管場所</th>
                 <th>賞味期限</th>
                 <th>操作</th>
             </tr>
@@ -53,6 +61,7 @@
             {# itemのstatusに応じてtrにクラスを適用 #}
             <tr class="{{ item['status'] }}">
                 <td>{{ item['name'] }}</td>
+                <td>{{ item['storage_location'] }}</td>
                 <td>{{ item['expiry_date'] }}</td>
                 <td>
                     <a href="{{ url_for('edit', id=item['id']) }}">編集</a>
