@@ -147,12 +147,13 @@ def menu():
     suggestion = None
     if request.method == 'POST':
         # 賞味期限が近い順に食材を取得（期限切れは除く）
-        items = Item.query.filter(Item.expiry_date >= date.today()).order_by(Item.expiry_date.asc()).all()
+        today = date.today()
+        items = Item.query.filter(Item.expiry_date >= today).order_by(Item.expiry_date.asc()).all()
         
         food_list = ", ".join([f"{item.name}（賞味期限: {item.expiry_date.isoformat()}）" for item in items])
           
         if food_list:
-            today_str = date.today().isoformat()
+            today_str = today.isoformat()
             prompt = f"""
             # 命令
             あなたはプロの料理研究家です。以下の制約条件と食材リストを元に、家庭で簡単に作れる献立を3つ提案してください。
