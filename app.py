@@ -149,7 +149,6 @@ def menu():
     if request.method == 'POST':
         today = date.today()
         # 賞味期限が近い順に食材を取得（期限切れは除く）
-        today = date.today()
         items = Item.query.filter(Item.expiry_date >= today).order_by(Item.expiry_date.asc()).all()
         
         food_list = [{"name": item.name, "expiry_date": item.expiry_date.isoformat()} for item in items]
